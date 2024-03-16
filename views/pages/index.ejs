@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <form action="/" method="post">
+            <input type="text" name="cityName" placeholder="Enter City">
+            <button type="submit">Go</button>
+        </form>
+        <h1>City: <%= cityName %></h1>
+        <h2>Latitude: <%= lat %></h2>
+        <h2>Longitude: <%= lon %></h2>
+        <h2>Sunrise: <%= riseTime %></h2>
+        <h2>Sunset: <%= setTime %></h2>
+        <h2>Weather Information</h2>
+        <ul>
+            <% if (forecastList && Array.isArray(forecastList)) { %>
+                <% const tmp = forecastList[0]; %>
+                <img src="https://<%= tmp.day.condition.icon %>" alt="">
+            <% } else { %>
+                <p>No icon</p>
+            <% } %>
+            <li>Temperature: <%= temperature %>°C</li>
+            <% if (forecastList && Array.isArray(forecastList)) { %>
+                <% const tmp = forecastList[0]; %>
+                <li>Max Temperature: <%= tmp.day.maxtemp_c %>°C</li>
+                <li>Min Temperature: <%= tmp.day.mintemp_c %>°C</li>
+            <% } %>
+            <li>Humidity: <%= humidity %>%</li>
+            <li>Sea Level Pressure: <%= pressure %> hPa</li>
+            <li>Feels Like: <%= feelsLike %>°C</li>
+            <li>Visibility: <%= visibility*1000 %> meters</li>
+            <li>Wind Speed: <%= windSpeed %> km/h</li>
+            <li>Wind Direction: <%= windDirection %>°</li>
+            <li>Cloudiness: <%= cloud %>%</li>
+            <li>Weather: <%= weather %></li>
+        </ul>
+        <h1>Next 7 Days Information</h1>
+        <ul>
+            <% if (forecastList && Array.isArray(forecastList)) { %>
+            <% forecastList.slice(1).forEach((forecast) => { %>
+            <li>Date: <%= forecast.date %></li>
+            <ul>
+                <img src="https://<%= forecast.day.condition.icon %>" alt="">
+                <li>Weather: <%= forecast.day.condition.text %></li>
+                <li>Sunrise: <%= forecast.astro.sunrise %></li>
+                <li>Sunset: <%= forecast.astro.sunset %></li>
+                <li>Min Temperature: <%= forecast.day.mintemp_c %>°C</li>
+                <li>Max Temperature: <%= forecast.day.maxtemp_c %>°C</li>
+                <li>Humidity: <%= forecast.day.avghumidity %>%</li>
+                <li>Chance of Rain: <%= forecast.day.daily_chance_of_rain %>%</li>
+            </ul>
+            <% }); %>
+            <% } else { %>
+            <li>No forecast data available.</li>
+            <% } %>
+        </ul>
+    </div>
+</body>
+
+</html>
